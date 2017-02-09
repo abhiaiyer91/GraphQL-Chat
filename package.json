@@ -8,19 +8,23 @@
     "start-client": "react-scripts start ./client",
     "build-client": "react-scripts build",
     "test-client": "react-scripts test --env=jsdom",
-    "start-server": "nodemon server/index.js --watch server --exec babel-node"
+    "start-server": "BABEL_DISABLE_CACHE=1 nodemon server/index.js --watch server --exec babel-node"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.0",
+    "casual": "^1.5.10",
     "express": "^4.14.1",
     "graphql": "^0.9.1",
     "graphql-server-express": "^0.6.0",
     "graphql-subscriptions": "^0.3.0",
     "graphql-tools": "^0.10.0",
+    "lodash": "^4.17.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "sequelize": "^3.30.2",
+    "sqlite": "^2.3.0",
     "subscriptions-transport-ws": "^0.5.0"
   },
   "devDependencies": {

@@ -1,5 +1,4 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import { merge } from 'lodash';
 import resolvers from './resolvers';
 import schema from './schema.graphql';
 
