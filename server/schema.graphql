@@ -1,0 +1,12 @@
+type Query {
+  messages: Int
+}
+
+type Subscription {
+  messageReceived: Int
+}
+
+schema {
+  query: Query
+  subscription: Subscription
+}
