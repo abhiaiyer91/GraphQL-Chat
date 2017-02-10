@@ -8,27 +8,31 @@
     "start-client": "react-scripts start ./client",
     "build-client": "react-scripts build",
     "test-client": "react-scripts test --env=jsdom",
-    "start-server": "nodemon server/index.js --watch server --exec babel-node"
+    "start-server": "BABEL_DISABLE_CACHE=1 nodemon server/index.js --watch server --exec babel-node"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.0",
+    "casual": "^1.5.10",
     "express": "^4.14.1",
     "graphql": "^0.9.1",
     "graphql-server-express": "^0.6.0",
     "graphql-subscriptions": "^0.3.0",
     "graphql-tools": "^0.10.0",
-    "subscriptions-transport-ws": "^0.5.0",
+    "lodash": "^4.17.4",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "sequelize": "^3.30.2",
+    "sqlite": "^2.3.0",
+    "subscriptions-transport-ws": "^0.5.0"
   },
   "devDependencies": {
-    "react-scripts": "0.8.5",
     "babel-cli": "6.16.0",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
     "babel-loader": "6.2.9",
+    "babel-plugin-inline-import": "^2.0.4",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-preset-stage-2": "^6.22.0",
@@ -40,6 +44,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "react-scripts": "0.8.5"
   }
 }

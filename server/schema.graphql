@@ -1,0 +1,33 @@
+type Chatroom {
+	id: ID
+	title: String
+	users: [User]
+	messages: [Message]
+}
+
+type User {
+	id: ID
+	displayName: String
+}
+
+type Message {
+	id: ID
+	text: String
+	createdBy: User
+	createdAt: String
+}
+
+type Query {
+	chatrooms: [Chatroom]
+	messages: [Message]
+	users: [User]
+}
+
+type Subscription {
+	messageReceived: Int
+}
+
+schema {
+	query: Query
+	subscription: Subscription
+}
