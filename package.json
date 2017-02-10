@@ -21,8 +21,6 @@
     "graphql-subscriptions": "^0.3.0",
     "graphql-tools": "^0.10.0",
     "lodash": "^4.17.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
     "sequelize": "^3.30.2",
     "sqlite": "^2.3.0",
     "subscriptions-transport-ws": "^0.5.0"
