@@ -23,11 +23,16 @@ type Query {
 	users: [User]
 }
 
+type Mutation {
+	addMessage(text: String!, userId: Int!, chatroomId: Int!): Message
+}
+
 type Subscription {
-	messageReceived: Int
+	messageAdded(chatroomId: Int!): Message
 }
 
 schema {
 	query: Query
+	mutation: Mutation
 	subscription: Subscription
 }
