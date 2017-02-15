@@ -1,7 +1,8 @@
 import { ChatroomResolve, MessageResolve } from './associations';
 import { chatrooms, messages, users } from './query';
 
-import { messageReceived } from './subscription';
+import { addMessage } from './mutation';
+import { messageAdded } from './subscription';
 
 const resolvers = {
 	Query: {
@@ -11,11 +12,11 @@ const resolvers = {
 	},
 	Chatroom: ChatroomResolve,
 	Message: MessageResolve,
-	// Mutation: {
-
-	// },
+	Mutation: {
+		addMessage
+	},
 	Subscription: {
-		messageReceived
+		messageAdded
 	}
 };
 export default resolvers;
