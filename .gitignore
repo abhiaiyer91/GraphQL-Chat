@@ -15,5 +15,5 @@ build
 npm-debug.log
 .idea/
 .vscode
-chatroom.sqlite
+*.sqlite
 .jsbeautifyrc

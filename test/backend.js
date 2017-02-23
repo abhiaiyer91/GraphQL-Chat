@@ -5,58 +5,54 @@ import test from 'ava';
 import fs from 'fs';
 import path from 'path';
 
-const db = new Sequelize('chatroom', null, null, {
-	dialect: 'sqlite',
-	storage: './test.sqlite',
-	logging: false
-});
+let Chatroom, Message, User;
 
-const Chatroom = db.define('chatroom', {
-	title: { type: Sequelize.STRING }
-});
+test.before(async t => {
+	const db = new Sequelize('chatroom', null, null, {
+		dialect: 'sqlite',
+		storage: './test.sqlite',
+		logging: false
+	});
 
-const Message = db.define('message', {
-	text: { type: Sequelize.STRING },
-	createdAt: { type: Sequelize.DATE, defaultValue: Date.now() }
-});
+	Chatroom = db.define('chatroom', {
+		title: { type: Sequelize.STRING }
+	});
 
-const User = db.define('user', {
-	displayName: { type: Sequelize.STRING }
-});
+	Message = db.define('message', {
+		text: { type: Sequelize.STRING },
+		createdAt: { type: Sequelize.DATE, defaultValue: Date.now() }
+	});
 
-Message.belongsTo(User);
-Message.belongsTo(Chatroom);
-Chatroom.hasMany(User);
-Chatroom.hasMany(Message);
-User.belongsTo(Chatroom);
-User.hasMany(Message);
+	User = db.define('user', {
+		displayName: { type: Sequelize.STRING }
+	});
 
-const seed = () => {
-	return new Promise((resolve, reject) => {
-		casual.seed(123);
-		db.sync({ force: true }).then(() => {
-			Chatroom.create({
-				title: casual.words(1)
-			}).then(chatroom => {
-				times(5, () => {
-					return chatroom.createUser({
-						displayName: casual.first_name
-					}).then(user => {
-						return chatroom.createMessage({
-							text: casual.sentences(1),
-							userId: user.dataValues.id,
-							createdAt: casual.unix_time
-						}).then(() => resolve());
-					});
+	Message.belongsTo(User);
+	Message.belongsTo(Chatroom);
+	Chatroom.hasMany(User);
+	Chatroom.hasMany(Message);
+	User.belongsTo(Chatroom);
+	User.hasMany(Message);
+
+
+	casual.seed(123);
+	return db.sync({ force: true }).then(() => {
+		Chatroom.create({
+			title: casual.words(1)
+		}).then(chatroom => {
+			times(5, () => {
+				return chatroom.createUser({
+					displayName: casual.first_name
+				}).then(user => {
+					return chatroom.createMessage({
+						text: casual.sentences(1),
+						userId: user.dataValues.id,
+						createdAt: casual.unix_time
+					}).then(() => t.pass());
 				});
 			});
 		});
 	});
-}
-
-test.before(async t => {
-	await seed();
-	t.pass();
 });
 
 test('Data seeded correctly', async t => {
@@ -80,4 +76,4 @@ test.after.always('cleanup', t => {
 });
 
 
-export { Chatroom, User, Message, seed };
+export { Chatroom, User, Message };
