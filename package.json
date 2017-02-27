@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "ava",
 		"watch:test": "ava --watch",
-		"start": "BABEL_DISABLE_CACHE=1 nodemon server/index.js --watch server --exec babel-node"
+		"start": "BABEL_DISABLE_CACHE=1 NODE_ENV=production nodemon server/index.js --watch server --exec babel-node"
 	},
 	"author": "",
 	"license": "ISC",
