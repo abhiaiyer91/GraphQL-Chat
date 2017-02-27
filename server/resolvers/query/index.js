@@ -13,7 +13,7 @@ const chatroom = (obj, args, context) => {
 };
 
 const users = (obj, args, context) => {
-	return args.hasOwnProperty('chatroomId') ?
+	return 'chatroomId' in args ?
 		User.findAll({
 			where: {
 				chatroomId: args.chatroomId
@@ -31,7 +31,7 @@ const user = (obj, args, context) => {
 };
 
 const messages = (obj, args, context) => {
-	return args.hasOwnProperty('chatroomId') ?
+	return 'chatroomId' in args ?
 		Message.findAll({
 			where: {
 				chatroomId: args.chatroomId

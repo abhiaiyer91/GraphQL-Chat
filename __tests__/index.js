@@ -1,14 +1,19 @@
+require('../server');
+
 import test from 'ava';
 import casual from 'casual';
 import { times } from 'lodash';
-import { db, Chatroom, User, Message } from './setup/backend';
-import { chatrooms, chatroom, users, user, messages } from '../server/resolvers/query';
-import { addMessage } from '../server/resolvers/mutation';
+import { sqlite as db } from '../server/models/connectors';
 import path from 'path';
 import fs from 'fs';
-import fmt from 'fmt-obj';
 
-test.before(async t => {
+import { subscriptionManager } from '../server/subscriptions';
+import { Chatroom, User, Message } from '../server/models/index';
+import { chatrooms, chatroom, users, user, messages } from '../server/resolvers/query';
+import { addMessage } from '../server/resolvers/mutation';
+
+
+test.before(t => {
 	casual.seed(123);
 	return db.sync({ force: true }).then(() => {
 		Chatroom.create({
@@ -26,6 +31,25 @@ test.before(async t => {
 				});
 			});
 		});
+	});
+});
+
+const messageStream = [];
+test.before('Load subscription manager', t => {
+	subscriptionManager.subscribe({
+		query: `subscription {
+		messageAdded(chatroomId:1){
+			id
+			text
+		}
+	}`,
+		callback: (err, data) => {
+			if (err) {
+				return t.fail(err);
+			} else {
+				messageStream.push(data);
+			}
+		}
 	});
 });
 
@@ -73,25 +97,28 @@ test('Query chatroom messages', async t => {
 	t.is(data.length, 5);
 });
 
-// test.after('Mutation addMessage', async t => {
-// 	const msg = {
-// 		text: 'Testing adding a message',
-// 		userId: 1,
-// 		chatroomId: 1
-// 	};
-// 	data = await addMessage({}, msg, {});
-// 	t.is(data.text, msg.text);
-// });
+let msg = {
+	text: 'Testing adding a message',
+	userId: 1,
+	chatroomId: 1
+};
+test.after('Mutation addMessage', async t => {
+	const data = await addMessage({}, msg, {});
+	t.is(data.text, msg.text);
+});
 
-test.todo('Mutation publishes to pubsub');
+test.after('Mutation publishes to pubsub', t => {
+	t.is(messageStream[0].data.messageAdded.text, msg.text);
+	t.is(messageStream.length, 1);
+});
 
 test.after.always('cleanup', t => {
-	let testDb = path.join(__dirname, '../test.sqlite');
+	let testDb = path.join(__dirname, '../testing.sqlite');
 	if (fs.existsSync(testDb)) {
 		fs.unlink(testDb, () => {
-			t.pass();
+			t.pass('Removed testing sqlite');
 		});
 	} else {
-		t.pass();
+		t.fail('Did not find testing sqlite');
 	}
 });
