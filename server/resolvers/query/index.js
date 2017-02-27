@@ -2,14 +2,42 @@ import { Chatroom, Message, User } from '../../models/index';
 
 const chatrooms = (obj, args, context) => {
 	return Chatroom.findAll();
-}
-
-const users = (obj, args, context) => {
-	return User.findAll();
-}
-
-const messages = (obj, args, context) => {
-	return Message.findAll();
 };
 
-export { chatrooms, users, messages };
+const chatroom = (obj, args, context) => {
+	return Chatroom.findOne({
+		where: {
+			id: args.id
+		}
+	}).then(chatroom => chatroom.dataValues);
+};
+
+const users = (obj, args, context) => {
+	return args.hasOwnProperty('chatroomId') ?
+		User.findAll({
+			where: {
+				chatroomId: args.chatroomId
+			}
+		}) :
+		User.findAll();
+};
+
+const user = (obj, args, context) => {
+	return User.findOne({
+		where: {
+			id: args.id
+		}
+	}).then(user => user.dataValues);
+};
+
+const messages = (obj, args, context) => {
+	return args.hasOwnProperty('chatroomId') ?
+		Message.findAll({
+			where: {
+				chatroomId: args.chatroomId
+			}
+		}) :
+		Message.findAll();
+};
+
+export { chatrooms, chatroom, users, user, messages };

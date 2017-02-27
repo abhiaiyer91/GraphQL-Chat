@@ -19,8 +19,10 @@ type Message {
 
 type Query {
 	chatrooms: [Chatroom]
-	messages: [Message]
-	users: [User]
+	chatroom(id:Int!): Chatroom
+	messages(chatroomId:Int): [Message]
+	users(chatroomId:Int): [User]
+	user(id:Int, search:String): User
 }
 
 type Mutation {
