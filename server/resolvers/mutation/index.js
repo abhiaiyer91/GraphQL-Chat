@@ -11,7 +11,6 @@ const addMessage = (obj, args, context) => {
       return message.dataValues;
     })
     .then(message => {
-      console.log('MESSAGE', message);
       pubsub.publish('messageAdded', { messageAdded: message });
     })
     .catch(e => {
