@@ -26,21 +26,24 @@ User.hasMany(Message);
 if (process.env.NODE_ENV === 'production') {
 	casual.seed(123);
 	db.sync({ force: true }).then(() => {
-		Chatroom.create({
-			title: casual.words(1)
-		}).then(chatroom => {
-			times(5, () => {
-				return chatroom.createUser({
-					displayName: casual.first_name
-				}).then(user => {
-					return chatroom.createMessage({
-						text: casual.sentences(1),
-						userId: user.dataValues.id,
-						createdAt: casual.unix_time
+		times(6, () => {
+			Chatroom.create({
+				title: casual.words(1)
+			}).then(chatroom => {
+				times(5, () => {
+					return chatroom.createUser({
+						displayName: casual.first_name
+					}).then(user => {
+						return chatroom.createMessage({
+							text: casual.sentences(1),
+							userId: user.dataValues.id,
+							createdAt: casual.unix_time
+						});
 					});
 				});
 			});
 		});
+
 	});
 }
 
